@@ -1,79 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>rosbridge_test</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      display: flex;
-      gap: 20px;
-    }
-    .section {
-      flex: 1;
-    }
-    pre {
-      background: #eee;
-      padding: 10px;
-      height: 400px;
-      overflow-y: auto;
-      white-space: pre-wrap;
-    }
-  </style>
+  <title>ROS Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://cdn.jsdelivr.net/npm/roslib/build/roslib.min.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="section">
-    <h2>/chatter</h2>
-    <pre id="chatterOutput"></pre>
+  <div class="top-row">
+    <div class="section">
+      <h2>/chatter</h2>
+      <pre id="chatterOutput"></pre>
+    </div>
+    <div class="section">
+      <h2>/rosout</h2>
+      <pre id="rosoutOutput"></pre>
+    </div>
+  </div>
+
+  <div id="map"></div>
+
+  <div id="chart-container">
+    <h2>/cmd_vel.linear.x</h2>
+    <canvas id="velocityChart"></canvas>
   </div>
 
   <div class="section">
-    <h2>/rosout</h2>
-    <pre id="rosoutOutput"></pre>
+    <h2>Camera Feed</h2>
+    <img src="http://100.115.145.61:8080/stream?topic=/image_raw" width="100%" />
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/roslib/build/roslib.min.js"></script>
-  <script>
-    const ros = new ROSLIB.Ros({
-      url: 'ws://100.115.145.61:9090'
-    });
-
-    ros.on('connection', () => {
-      console.log('Connected to rosbridge websocket.');
-      document.getElementById('chatterOutput').textContent += 'Connected\n';
-    });
-
-    ros.on('error', (error) => {
-      console.error('Error connecting to rosbridge websocket:', error);
-      document.getElementById('chatterOutput').textContent += 'Error\n';
-    });
-
-    ros.on('close', () => {
-      console.log('Connection to rosbridge websocket closed.');
-      document.getElementById('chatterOutput').textContent += 'Closed\n';
-    });
-
-    const listener = new ROSLIB.Topic({
-      ros: ros,
-      name: '/chatter',
-      messageType: 'std_msgs/msg/String'
-    });
-
-    const listener_rosout = new ROSLIB.Topic({
-      ros: ros,
-      name: '/rosout',
-      messageType: 'rcl_interfaces/msg/Log'
-    });
-
-    listener.subscribe((message) => {
-      console.log('Received message on /chatter:', message.data);
-      document.getElementById('chatterOutput').textContent += message.data + '\n';
-    });
-
-    listener_rosout.subscribe((message) => {
-      const line = `[${message.level}] ${message.name}: ${message.msg}`;
-      console.log('Received /rosout log:', line);
-      document.getElementById('rosoutOutput').textContent += line + '\n';
-    });
-  </script>
+  <!-- Load JavaScript -->
+  <script src="js/ros_connection.js"></script>
+  <script src="js/gps_map.js"></script>
+  <script src="js/velocity_chart.js"></script>
+  <script src="js/logging.js"></script>
 </body>
 </html>

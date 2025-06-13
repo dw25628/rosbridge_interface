@@ -13,3 +13,8 @@ http://localhost:8000/index.html
 
 
 Had issues with foxglove bridge due to messages being in CDR format# rosbridge_interface
+
+For image stream
+ros2 run web_video_server web_video_server
+http://<your-robot-ip>:8080/stream?topic=/image_raw
+
