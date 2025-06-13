@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>rosbridge_test</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      gap: 20px;
+    }
+    .section {
+      flex: 1;
+    }
+    pre {
+      background: #eee;
+      padding: 10px;
+      height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="section">
+    <h2>/chatter</h2>
+    <pre id="chatterOutput"></pre>
+  </div>
+
+  <div class="section">
+    <h2>/rosout</h2>
+    <pre id="rosoutOutput"></pre>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/roslib/build/roslib.min.js"></script>
+  <script>
+    const ros = new ROSLIB.Ros({
+      url: 'ws://100.115.145.61:9090'
+    });
+
+    ros.on('connection', () => {
+      console.log('Connected to rosbridge websocket.');
+      document.getElementById('chatterOutput').textContent += 'Connected\n';
+    });
+
+    ros.on('error', (error) => {
+      console.error('Error connecting to rosbridge websocket:', error);
+      document.getElementById('chatterOutput').textContent += 'Error\n';
+    });
+
+    ros.on('close', () => {
+      console.log('Connection to rosbridge websocket closed.');
+      document.getElementById('chatterOutput').textContent += 'Closed\n';
+    });
+
+    const listener = new ROSLIB.Topic({
+      ros: ros,
+      name: '/chatter',
+      messageType: 'std_msgs/msg/String'
+    });
+
+    const listener_rosout = new ROSLIB.Topic({
+      ros: ros,
+      name: '/rosout',
+      messageType: 'rcl_interfaces/msg/Log'
+    });
+
+    listener.subscribe((message) => {
+      console.log('Received message on /chatter:', message.data);
+      document.getElementById('chatterOutput').textContent += message.data + '\n';
+    });
+
+    listener_rosout.subscribe((message) => {
+      const line = `[${message.level}] ${message.name}: ${message.msg}`;
+      console.log('Received /rosout log:', line);
+      document.getElementById('rosoutOutput').textContent += line + '\n';
+    });
+  </script>
+</body>
+</html>
