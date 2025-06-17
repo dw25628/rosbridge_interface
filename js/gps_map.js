@@ -5,7 +5,7 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/
 
 let marker = L.marker([42.0, -93.0]).addTo(map).bindPopup("Robot Position").openPopup();
 const gpsTrail = [];
-const maxTrailLength = 50;
+const maxTrailLength = 50000;
 let polyline = L.polyline([], { color: 'blue' }).addTo(map);
 
 const gpsListener = new ROSLIB.Topic({

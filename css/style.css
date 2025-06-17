@@ -41,3 +41,27 @@ body {
     height: 300px;
   }
   
+  .dashboard {
+    background-color: #1e1e2f;
+    color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    width: 400px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  
+  .dashboard-row {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .dashboard-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    background: #2a2a40;
+    padding: 10px 15px;
+    border-radius: 8px;
+  }
