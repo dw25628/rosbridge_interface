@@ -3,7 +3,7 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/
   attribution: 'Tiles © Esri'
 }).addTo(map);
 
-let marker = L.marker([42.0, -93.0]).addTo(map).bindPopup("Robot Position").openPopup();
+let marker = L.marker([42.0, -93.0]).addTo(map).bindPopup("Moab").openPopup();
 const gpsTrail = [];
 const maxTrailLength = 50000;
 let polyline = L.polyline([], { color: 'blue' }).addTo(map);

@@ -1,0 +1,13 @@
+[Unit]
+Description=Start Python Web UI Server
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/moab/custom_web_interface
+ExecStart=/usr/bin/python3 -m http.server 8000
+Restart=on-failure
+User=moab
+
+[Install]
+WantedBy=multi-user.target
