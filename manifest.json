@@ -1,0 +1,17 @@
+
+{
+  "name": "Moab",
+  "short_name": "Moab",
+  "icons": [{
+    "src": "images/hello-icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    }],
+  "lang": "en-US",
+  // "start_url": "./index.html",
+  "scope": "/rosbridge_interface/",
+  "start_url": "/rosbridge_interface/index.html",
+  "display": "standalone",
+  "background_color": "white",
+  "theme_color": "white"
+}
